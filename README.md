@@ -5,7 +5,7 @@
 | Student | GitHub username |
 |---|---|
 | Juan Sebastian Murcia Yanquen | JuanMurciaY|
-| STUDENT 2 NAME | USERNAME |
+| Jhonatan Peña Mora | jhonatanpenamora-png |
 | STUDENT 3 NAME | USERNAME |
 
 ## Project description
@@ -55,6 +55,12 @@ Run only the fixed-pool tests:
 
 ```bash
 mvn "-Dtest=FixedPoolBlackListSearchTest" test
+```
+
+Run only the virtual-threads tests:
+
+```bash
+mvn "-Dtest=VirtualThreadBlackListSearchTest" test
 ```
 
 ## Implemented strategies
@@ -271,9 +277,9 @@ While implementing the fixed thread pool strategy, I learned that using more thr
 
 ### Student 2
 
-**Name:** STUDENT 2 NAME
+**Name:** Jhonatan Peña Mora
 
-While working with virtual threads, I understood why they are useful for applications that spend a lot of time waiting for external responses. They allowed every provider to have its own task without creating the same cost as a large number of platform threads. The experiment also showed that virtual threads do not make small local calculations automatically faster. I learned that the concurrency model must be selected according to the workload and not only because a technology is newer. Request limits and timeouts are still necessary in a real system.
+While implementing the virtual threads strategy, I understood why they are useful for applications that spend a lot of time waiting for external responses. They allowed every provider to have its own task without creating the same cost as a large number of platform threads. The experiment also showed that virtual threads do not make small local calculations automatically faster. I learned that the concurrency model must be selected according to the workload and not only because a technology is newer. Request limits and timeouts are still necessary in a real system.
 
 ### Student 3
 
@@ -286,7 +292,7 @@ The benchmark helped me understand the importance of measuring software decision
 | Student | GitHub username | Main contribution | Relevant commits |
 |---|---|---|---|
 |Juan Sebastian Murcia Yanquen | JuanMurciaY | Fixed pool implementation, tests, and analysis | COMMIT HASHES |
-| STUDENT 2 NAME | USERNAME | Virtual threads implementation, tests, and analysis | COMMIT HASHES |
+| Jhonatan Peña Mora | jhonatanpenamora-png | Virtual threads implementation, tests, and analysis | 54993dc 51ad8e3 |
 | STUDENT 3 NAME | USERNAME | Benchmark runner, results, and documentation | COMMIT HASHES |
 
 ## Use of artificial intelligence
