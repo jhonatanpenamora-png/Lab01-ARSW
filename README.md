@@ -2,11 +2,11 @@
 
 ## Team members
 
-| Student | GitHub username |
-|---|---|
+| Student                       | GitHub username |
+|-------------------------------|---|
 | Juan Sebastian Murcia Yanquen | JuanMurciaY|
-| Jhonatan Peña Mora | jhonatanpenamora-png |
-| STUDENT 3 NAME | USERNAME |
+| Jhonatan Peña Mora            | jhonatanpenamora-png |
+| Jhonatan Madero Riaño         | jhonatanmadero |
 
 ## Project description
 
@@ -134,15 +134,18 @@ mvn exec:java "-Dexec.args=VIRTUAL 202.24.34.55 true 2 5"
 
 | Item | Value |
 |---|---|
-| Operating system | Windows 11 25H2 |
-| CPU | Intel Core i5-13450HX |
+| Operating system | Microsoft Windows 11 Home Single Language, version 10.0.26200, 64-bit |
+| CPU | 13th Gen Intel(R) Core(TM) i5-13450HX |
 | Logical processors | 16 |
 | RAM | 31.71 GiB |
-| Java | Oracle Java 21.0.11 LTS |
+| JDK (runtime used to execute the benchmark) | OpenJDK 24.0.2 (Eclipse Temurin) |
+| Bytecode target | Java 21 (`maven.compiler.release=21`) |
 | Maven | Apache Maven 3.9.16 |
-| Measurement date | 2026-08-05 |
+| Measurement date | 2026-08-08 |
 | Warm-up executions | 2 |
 | Measured executions | 5 |
+
+Full details, including the methodology notes, are in [`results/environment.md`](results/environment.md).
 
 The raw measurements are available in:
 
@@ -160,16 +163,18 @@ Speedup = sequential average / strategy average
 
 | Scenario | Strategy | Pool | Average ms | Minimum ms | Maximum ms | Speedup | Matches | Consulted |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| No simulated I/O | Sequential | — | 0.019 | 0.009 | 0.036 | 1.00 | 7 | 100 |
-| No simulated I/O | Fixed pool | 2 | 1.111 | 0.561 | 2.342 | 0.02 | 7 | 100 |
-| No simulated I/O | Fixed pool | 4 | 1.255 | 0.584 | 2.639 | 0.01 | 7 | 100 |
-| No simulated I/O | Fixed pool | 8 | 1.924 | 1.101 | 3.255 | 0.01 | 7 | 100 |
-| No simulated I/O | Virtual threads | — | 0.880 | 0.675 | 1.219 | 0.02 | 7 | 100 |
-| Simulated I/O | Sequential | — | 11886.456 | 11407.918 | 12751.884 | 1.00 | 7 | 100 |
-| Simulated I/O | Fixed pool | 2 | 5525.378 | 5511.525 | 5561.022 | 2.15 | 7 | 100 |
-| Simulated I/O | Fixed pool | 4 | 2828.355 | 2824.969 | 2831.752 | 4.20 | 7 | 100 |
-| Simulated I/O | Fixed pool | 8 | 1476.013 | 1472.657 | 1482.231 | 8.05 | 7 | 100 |
-| Simulated I/O | Virtual threads | — | 207.918 | 202.533 | 216.285 | 57.17 | 7 | 100 |
+| No simulated I/O | Sequential | — | 0.027 | 0.007 | 0.104 | 1.00 | 7 | 100 |
+| No simulated I/O | Fixed pool | 2 | 0.640 | 0.557 | 0.751 | 0.04 | 7 | 100 |
+| No simulated I/O | Fixed pool | 4 | 0.975 | 0.834 | 1.116 | 0.03 | 7 | 100 |
+| No simulated I/O | Fixed pool | 8 | 1.210 | 1.052 | 1.439 | 0.02 | 7 | 100 |
+| No simulated I/O | Virtual threads | — | 0.692 | 0.526 | 1.104 | 0.04 | 7 | 100 |
+| Simulated I/O | Sequential | — | 10943.796 | 10940.827 | 10951.540 | 1.00 | 7 | 100 |
+| Simulated I/O | Fixed pool | 2 | 5886.840 | 5872.646 | 5907.056 | 1.86 | 7 | 100 |
+| Simulated I/O | Fixed pool | 4 | 2825.884 | 2825.498 | 2826.593 | 3.87 | 7 | 100 |
+| Simulated I/O | Fixed pool | 8 | 1559.585 | 1552.394 | 1571.257 | 7.02 | 7 | 100 |
+| Simulated I/O | Virtual threads | — | 199.636 | 199.370 | 200.208 | 54.82 | 7 | 100 |
+
+Raw data (including timestamps) is in [`results/results.csv`](results/results.csv), produced automatically by `BenchmarkRunner` on every run — nothing in this table was typed by hand.
 
 ## Analysis
 
@@ -195,15 +200,15 @@ A faster strategy is not useful if it skips providers or returns a different ans
 
 #### 5. What changed from 2 to 4 threads?
 
-With simulated I/O, the average decreased from `5525.378 ms` to `2828.355 ms`. Four threads could consult more providers while other threads were waiting.
+With simulated I/O, the average decreased from `5886.840 ms` to `2825.884 ms`. Four threads could consult more providers while other threads were waiting.
 
-Without simulated I/O, the average increased from `1.111 ms` to `1.255 ms` because the local work was too small to benefit from additional threads.
+Without simulated I/O, the average increased from `0.640 ms` to `0.975 ms` because the local work was too small to benefit from additional threads.
 
 #### 6. What changed from 4 to 8 threads?
 
-With simulated I/O, the average decreased from `2828.355 ms` to `1476.013 ms`.
+With simulated I/O, the average decreased from `2825.884 ms` to `1559.585 ms`.
 
-Without simulated I/O, the average increased to `1.924 ms`. This showed that adding threads does not always make a program faster.
+Without simulated I/O, the average increased to `1.210 ms`. This showed that adding threads does not always make a program faster.
 
 #### 7. Was the improvement proportional?
 
@@ -223,7 +228,7 @@ A very large pool can consume more memory and produce more context switches. It 
 
 #### 10. When did virtual threads provide the clearest benefit?
 
-They provided the clearest benefit with simulated blocking I/O. Their average was `207.918 ms`, compared with `11886.456 ms` for the sequential strategy.
+They provided the clearest benefit with simulated blocking I/O. Their average was `199.636 ms`, compared with `10943.796 ms` for the sequential strategy.
 
 #### 11. Why are virtual threads useful for blocking operations?
 
@@ -253,7 +258,7 @@ A fixed pool is useful when the system needs direct control over the number of s
 
 #### 17. What evidence supports this decision?
 
-Virtual threads achieved a `57.17` speedup with simulated I/O. In contrast, all concurrent strategies were slower than the sequential strategy without simulated I/O.
+Virtual threads achieved a `54.82` speedup with simulated I/O. In contrast, all concurrent strategies were slower than the sequential strategy without simulated I/O.
 
 #### 18. What are the limitations of this experiment?
 
@@ -263,7 +268,7 @@ The experiment used one computer, one IP address, 100 simulated providers, and f
 
 The results showed that the best concurrency strategy depends on the type of work performed by the application. Without simulated I/O, the sequential strategy was the fastest because each provider performed a very small local calculation. In this scenario, creating and coordinating concurrent tasks added more work than it removed.
 
-With simulated blocking I/O, concurrency produced a clear improvement. Fixed pools became faster as their size increased, reaching a speedup of `8.05` with eight threads. Virtual threads produced the best result with an average of `207.918 ms` and a speedup of `57.17`.
+With simulated blocking I/O, concurrency produced a clear improvement. Fixed pools became faster as their size increased, reaching a speedup of `7.02` with eight threads. Virtual threads produced the best result with an average of `199.636 ms` and a speedup of `54.82`.
 
 Based on this evidence, we recommend virtual threads for systems that perform many independent blocking calls. However, the application should still use timeouts and request limits to protect external services. For small local operations, the sequential strategy is easier to understand and more efficient. A fixed pool remains useful when the architecture needs explicit control over concurrency. These conclusions are limited to this experiment and should not be applied to every production system without additional measurements.
 
@@ -283,9 +288,11 @@ While implementing the virtual threads strategy, I understood why they are usefu
 
 ### Student 3
 
-**Name:** 
+**Name:** Jhonatan Madero Riaño
 
 The benchmark helped me understand the importance of measuring software decisions instead of assuming that one strategy is always better. Warm-up executions, repeated measurements, and raw data made the comparison easier to explain. I also learned that speedup must use the sequential result from the same scenario. The results showed a clear difference between local and blocking workloads. From an architectural perspective, performance is only one part of the decision because complexity, resource limits, correctness, and maintainability must also be considered.
+
+While completing this part I found that the results table already in this README had been written before `BenchmarkRunner` actually supported the `FIXED` and `VIRTUAL` strategies, so those numbers could not have come from a real run. I extended `BenchmarkRunner` to select a strategy from the command line, run the warm-ups and measured executions, and append every run to `results/results.csv` automatically instead of typing numbers by hand. I then re-ran all ten configurations on my own machine and replaced the results with the real ones. This showed me that a results table is only trustworthy if you can point to the exact command and file that produced each number.
 
 ## Contribution evidence
 
@@ -293,13 +300,14 @@ The benchmark helped me understand the importance of measuring software decision
 |---|---|---|---|
 |Juan Sebastian Murcia Yanquen | JuanMurciaY | Fixed pool implementation, tests, and analysis | COMMIT HASHES |
 | Jhonatan Peña Mora | jhonatanpenamora-png | Virtual threads implementation, tests, and analysis | 54993dc 51ad8e3 |
-| STUDENT 3 NAME | USERNAME | Benchmark runner, results, and documentation | COMMIT HASHES |
+| Jhonatan Madero Riaño | jhonatanmadero | Benchmark runner, results, and documentation | 089e46f de572ec |
 
 ## Use of artificial intelligence
 
 | Tool | Purpose | Activities | Validation |
 |---|---|---|---|
 | OpenAI Codex | Support during implementation and documentation | Code explanation, test suggestions, benchmark guidance, and README drafting | The team reviewed the code, executed automated tests, compared all strategies, and checked the benchmark results |
+| Claude Code | Support during Part 3 implementation and documentation | Extended `BenchmarkRunner` with strategy selection, warm-up/measured runs and automatic CSV export; ran all ten benchmark configurations on the author's machine; corrected results, analysis figures, and environment data that did not match an actual run | Jhonatan Madero Riaño reviewed the implementation, re-ran `mvn clean test` and the benchmark commands himself, and can explain how each number in `results/results.csv` was produced |
 
 AI was used as a support tool. Every team member reviewed their contribution and is responsible for understanding and explaining the submitted code.
 
